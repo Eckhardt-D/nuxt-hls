@@ -1,6 +1,6 @@
 {
-  "name": "nuxt-hls",
-  "version": "0.1.0",
+  "name": "@eckidevs/nuxt-hls",
+  "version": "0.1.1",
   "description": "A Nuxt module to automatically convert mp4 assets to HLS on build, with a smart player component",
   "repository": "Eckhardt-D/nuxt-hls",
   "license": "MIT",
