@@ -5,7 +5,7 @@
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-Convert all your mp4 video assets to HLS and stream them from your public folder on build. Use the custom video component, to point to your original src and it will automatically check if HLS supported and offer you an option to fall back to MP4.
+Convert all your mp4 video assets from `~/assets/videos` to HLS in `~/public/videos` on build. Use the custom video component, to point to your original src in assets and it will automatically check if HLS supported.
 
 - [✨ &nbsp;Release Notes](/CHANGELOG.md)
 - [🏀 Online playground](https://stackblitz.com/github/Eckhardt-D/nuxt-hls?file=playground%2Fapp.vue)
@@ -16,7 +16,7 @@ Convert all your mp4 video assets to HLS and stream them from your public folder
 <!-- Highlight some of the features your module provide here -->
 - ⛰ &nbsp;Automatically converts MP4 to HLS from your `~/assets/videos` folder
 - 🚠 &nbsp;Only does the conversion on initial build
-- 🌲 &nbsp;Optionally copies the .mp4 files to public with an option
+- 🌲 &nbsp;Optionally copies the .mp4 files to public with a fallback option
 
 ## Quick Setup
 
@@ -53,37 +53,27 @@ export default defineNuxtConfig({
 
 That's it! You can now use Nuxt HLS in your Nuxt app ✨
 
-## Development
-
-```bash
-# Install dependencies
-npm install
-
-# Generate type stubs
-npm run dev:prepare
-
-# Develop with the playground
-npm run dev
-
-# Build the playground
-npm run dev:build
-
-# Run ESLint
-npm run lint
-
-# Run Vitest
-npm run test
-npm run test:watch
-
-# Release new version
-npm run release
-```
-
 ## Documentation
 
-To use the module, create the `~/assets/videos` directory and put all your video assets in there, only put the .mp4 videos in here that you want Nuxt HLS to control.
+### Options
 
+`fallbackIfUnsupported` - boolean - default = false.
+`skip` - string[] - optional
+
+### Usage
+
+To use the module, create the `~/assets/videos` directory and put all your video assets in there, only put the .mp4 videos in here that you want Nuxt HLS to control.
 Now you can simply use the `<VideoStream/>` component with your original asset path and it will automagically use the `.m3u8` file created on build.
+
+### How it works
+
+When you run build / dev. The module will look at `~/assets/videos` to discover all the mp4 videos and convert them to the HLS formats `.m3u8` and `.ts` and place them in your public folder, the `<VideoStream />` component src can point to either `/videos/my-video.m3u8` or it can point to `~/assets/videos/my-video.mp4`, the component will handle using the HLS version.
+
+### Steps
+
+1. Add some mp4 assets to `~/assets/videos` e.g. `~/assets/videos/my-video.mp4`
+
+2. Use the `<VideoStream />` component and point the `src` prop to your asset:
 
 ```vue
 <template>
@@ -94,7 +84,9 @@ Now you can simply use the `<VideoStream/>` component with your original asset p
 ### A note on support
 
 If the browser does not support HLS, the player will attempt a fallback to using the .mp4 path , but only if configured at build time with the `fallbackIfUnsupported` option.
-If this option is `true`, Nuxt HLS will do a copy of your original .mp4 video into `/public/videos/my-video.mp4`. This is also where the .m3u8 and .ts files get copied to.
+If this option is `true`, Nuxt HLS will do a copy of your original .mp4 video into `/public/videos/my-video.mp4` and point to that if HLS is unsupported.
+
+If `fallbackIfUnsupported` is `false` or undefined, it will not copy it and your video will not play in unsupported environments.
 
 ### A note on caching
 
