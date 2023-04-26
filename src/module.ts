@@ -63,6 +63,11 @@ export default defineNuxtModule<ModuleOptions>({
           return Promise.resolve();
         }
 
+        if (!entry.path.endsWith(".mp4")) {
+          logger.log(`💡 Skipping '${entry.name}', unsupported type`);
+          return Promise.resolve();
+        }
+
         const publicPath = resolver.resolve(
           nuxt.options.rootDir,
           "./public/videos"
