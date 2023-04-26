@@ -118,7 +118,8 @@ export default defineNuxtModule<ModuleOptions>({
         });
       });
 
-      await Promise.all(promises);
+      // Continue if others fail
+      await Promise.allSettled(promises);
 
       logger.log("✅ Video processing complete");
     });
