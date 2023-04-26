@@ -46,6 +46,9 @@ export default defineNuxtConfig({
 
     // Skip video conversion by file name
     skip: ["video.mp4", "private.mp4"],
+
+    // How long in seconds each part should be (default=10)
+    hlsTime: 3,
   },
 });
 ```
@@ -56,8 +59,11 @@ That's it! You can now use Nuxt HLS in your Nuxt app ✨
 
 ### Options
 
-`fallbackIfUnsupported` - boolean - default = false.
-`skip` - string[] - optional
+`fallbackIfUnsupported` - boolean - default = false - Copy the .mp4 directly and use that if HLS (Media Source) is not supported.
+<br>
+`skip` - string[] - optional - Array of filenames to skip.
+<br>
+`hlsTime` - number - default = 10 - The length in seconds of each slice of media.
 
 ### Usage
 

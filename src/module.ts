@@ -15,6 +15,7 @@ import {
 // Module options TypeScript interface definition
 export interface ModuleOptions {
   fallbackIfUnsupported: boolean;
+  hlsTime: number;
   skip?: string[];
 }
 const PKG_NAME = "nuxt-hls";
@@ -26,6 +27,7 @@ export default defineNuxtModule<ModuleOptions>({
   },
   defaults: {
     fallbackIfUnsupported: false,
+    hlsTime: 10,
   },
   setup(options, nuxt) {
     const logger = useLogger(PKG_NAME);
@@ -112,7 +114,7 @@ export default defineNuxtModule<ModuleOptions>({
               "-profile:v baseline",
               "-level 3.0",
               "-start_number 0",
-              "-hls_time 10",
+              `-hls_time ${options.hlsTime}`,
               "-hls_list_size 0",
               "-f hls",
             ])
