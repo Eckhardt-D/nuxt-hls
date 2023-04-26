@@ -1,6 +1,27 @@
 # Changelog
 
 
+## v0.1.6
+
+[compare changes](https://undefined/undefined/compare/v0.1.5...v0.1.6)
+
+
+### 🚀 Enhancements
+
+  - **conversion:** HlsTime option (96fba6d)
+
+### 🩹 Fixes
+
+  - Skip unsupported types (009a93a)
+
+### 🏡 Chore
+
+  - Test valid, invalid and nested videos (3027020)
+
+### ❤️  Contributors
+
+- Eckhardt-D <eckhardt.dreyer@gmail.com>
+
 ## v0.1.5
 
 [compare changes](https://undefined/undefined/compare/v0.1.4...v0.1.5)
