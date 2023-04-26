@@ -1,4 +1,5 @@
 import fs, { existsSync, mkdirSync } from "fs";
+import { join } from "path";
 import ffmpeg from "fluent-ffmpeg";
 import ffmpegInstaller from "@ffmpeg-installer/ffmpeg";
 
@@ -45,7 +46,8 @@ export default defineNuxtModule<ModuleOptions>({
         return;
       }
 
-      const dir = fs.readdirSync(path, { withFileTypes: true });
+      const dir = recursivelyReaddir(path);
+
       if (dir.length < 1) {
         logger.log("🫗 No video assets to convert");
         return;
@@ -66,25 +68,29 @@ export default defineNuxtModule<ModuleOptions>({
           "./public/videos"
         );
 
-        if (!existsSync(publicPath)) {
-          mkdirSync(publicPath, { recursive: true });
+        const parts = entry.path.split("/");
+        parts.pop(); // remove file
+        const requiredDirectory = resolver.resolve(publicPath, parts.join("/"));
+
+        if (!existsSync(requiredDirectory)) {
+          mkdirSync(requiredDirectory, { recursive: true });
         }
 
         const outputPath = resolver.resolve(
           publicPath,
-          entry.name.replace(".mp4", ".m3u8")
+          entry.path.replace(".mp4", ".m3u8")
         );
 
         const videoPath = resolver.resolve(
           nuxt.options.rootDir,
           "./assets/videos",
-          entry.name
+          entry.path
         );
 
         // If fallback is specified and HLS is unsupported in the browser
         // <VideoStream/> will use the public .mp4 src, so it needs to exist
         if (options?.fallbackIfUnsupported) {
-          const mp4BackupOutputPath = resolver.resolve(publicPath, entry.name);
+          const mp4BackupOutputPath = resolver.resolve(publicPath, entry.path);
           if (!fs.existsSync(mp4BackupOutputPath)) {
             fs.copyFileSync(videoPath, mp4BackupOutputPath);
           }
@@ -118,3 +124,30 @@ export default defineNuxtModule<ModuleOptions>({
     });
   },
 });
+
+function recursivelyReaddir(
+  root: string,
+  entries = [] as { name: string; path: string }[],
+  currentBasePath = ""
+): { name: string; path: string }[] {
+  const dir = fs.readdirSync(root, { withFileTypes: true });
+
+  for (let i = 0; i < dir.length; i++) {
+    const entry = dir[i];
+
+    if (!entry.isDirectory()) {
+      entries.push({
+        name: entry.name,
+        path: join(currentBasePath, entry.name),
+      });
+    } else {
+      return recursivelyReaddir(
+        join(root, entry.name),
+        entries,
+        join(currentBasePath, entry.name)
+      );
+    }
+  }
+
+  return entries;
+}
