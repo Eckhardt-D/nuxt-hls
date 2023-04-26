@@ -1,7 +1,8 @@
-import MyModule from '../../../src/module'
+import MyModule from "../../../src/module";
 
 export default defineNuxtConfig({
   modules: [
-    MyModule
-  ]
-})
+    // @ts-expect-error
+    MyModule,
+  ],
+});

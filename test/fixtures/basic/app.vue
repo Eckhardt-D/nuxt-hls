@@ -1,6 +1,8 @@
 <template>
-  <div>basic</div>
+  <VideoStream
+    ref="video"
+    src="~/assets/videos/demo.mp4"
+    width="960"
+    controls
+  />
 </template>
-
-<script setup>
-</script>
