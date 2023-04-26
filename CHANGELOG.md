@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.1.5
+
+[compare changes](https://undefined/undefined/compare/v0.1.4...v0.1.5)
+
+
+### 🩹 Fixes
+
+  - Tests (f5ce676)
+
+### ❤️  Contributors
+
+- Eckhardt-D <eckhardt.dreyer@gmail.com>
+
 ## v0.1.4
 
 [compare changes](https://undefined/undefined/compare/v0.1.3...v0.1.4)
