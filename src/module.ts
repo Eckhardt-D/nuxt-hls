@@ -41,7 +41,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     nuxt.hooks.hook("build:before", async () => {
       logger.log("🔎 Discovering video assets");
-      const path = resolver.resolve(nuxt.options.rootDir, "./assets/videos");
+      const path = resolver.resolve(nuxt.options.rootDir, "./app/assets/videos");
 
       if (!fs.existsSync(path)) {
         logger.log("🫗 No video assets to convert");
@@ -90,7 +90,7 @@ export default defineNuxtModule<ModuleOptions>({
 
         const videoPath = resolver.resolve(
           nuxt.options.rootDir,
-          "./assets/videos",
+          "./app/assets/videos",
           entry.path
         );
 
